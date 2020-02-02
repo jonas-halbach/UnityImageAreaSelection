@@ -31,7 +31,7 @@ namespace com.halbach.imageselection.image {
                 for (int col = startCol; col < endCol; col++) {
                     int indexInOriginalImage = indexTransformer.CalculateOriginalPixelIndexFromOriginalImageRowCol(col, row);
                     Color pixelColor = Color.clear;
-                    if(indexInOriginalImage > 0)
+                    if(indexInOriginalImage >= 0)
                     {
                         pixelColor = SoureImage[indexInOriginalImage];
                     }
