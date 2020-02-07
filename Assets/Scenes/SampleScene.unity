@@ -547,7 +547,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   transformTarget: {fileID: 318275940}
-  triggerDistance: 100
+  triggerDistance: 10
   defaultCursorTexture: {fileID: 2800000, guid: 9ed1cb3a013b69af4bede1dabde9bdf8,
     type: 3}
   scaleUpperLeftCornerCurserTexture: {fileID: 2800000, guid: b9a640ba8014c31b1aa63a16c77364d4,
