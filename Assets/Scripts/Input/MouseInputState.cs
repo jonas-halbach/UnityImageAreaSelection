@@ -59,6 +59,7 @@ namespace com.halbach.imageselection.input {
 
         protected void InitializeState()
         {
+            mouseCorner = RectCorner.NO_CORNER;
             ChangeCursorTexture();
             PrintTriggerMessage(mouseCorner.ToString());
         }
@@ -182,8 +183,17 @@ namespace com.halbach.imageselection.input {
 
         private IMouseInputState HandleCornerTriggered(RectCorner corner)
         {
-            Texture2D cursorTexture = GetCursorTexture(corner);
-            return new MouseOverCornerState(corner, cursorTexture);
+            IMouseInputState state = this;
+            if(DoesStateChange(corner)) {
+                Texture2D cursorTexture = GetCursorTexture(corner);
+                state = new MouseOverCornerState(corner, cursorTexture);
+            }
+            return state;
+        }
+
+        private bool DoesStateChange(RectCorner corner)
+        {
+            return corner != mouseCorner;
         }
 
         private IMouseInputState HandleNotTriggerd() {
