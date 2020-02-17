@@ -28,6 +28,9 @@ namespace com.halbach.imageselection.input {
         [SerializeField]
         private Texture2D scaleLowerLeftCornerCurserTexture;
 
+        [SerializeField]
+        private Texture2D moveCursorTexture;
+
         private IMouseInputState mouseInputState;
 
         // Start is called before the first frame update
@@ -35,7 +38,7 @@ namespace com.halbach.imageselection.input {
         {
             mouseInputState = new MouseInputState(triggerDistance, transformTarget, defaultCursorTexture,
                                                     scaleUpperLeftCornerCurserTexture, scaleUpperRightCornerCurserTexture,
-                                                    scaleLowerRightCornerCurserTexture, scaleLowerLeftCornerCurserTexture);
+                                                    scaleLowerRightCornerCurserTexture, scaleLowerLeftCornerCurserTexture, moveCursorTexture);
         }
 
         // Update is called once per frame

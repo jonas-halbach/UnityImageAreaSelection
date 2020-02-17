@@ -11,13 +11,15 @@ namespace com.halbach.imageselection.input {
         protected Texture2D scaleLowerRightCornerCurserTexture;
         protected Texture2D scaleLowerLeftCornerCurserTexture;
 
+        protected Texture2D moveCursorTexture;
+
         protected Texture2D[] mouseCursorTextures;
         protected Vector2 currentMousePosition;
 
         private Texture2D mouseCursorTexture;
-        private RectCorner mouseCorner;
+        private TargetMousePosition mouseCorner;
 
-        public MouseInputState(RectCorner mouseCorner, Texture2D mouseCursorTexture) {
+        public MouseInputState(TargetMousePosition mouseCorner, Texture2D mouseCursorTexture) {
             this.mouseCorner = mouseCorner;
             this.mouseCursorTexture = mouseCursorTexture;
 
@@ -30,7 +32,8 @@ namespace com.halbach.imageselection.input {
                                 Texture2D scaleUpperLeftCornerCurserTexture,
                                 Texture2D scaleUpperRightCornerCurserTexture,
                                 Texture2D scaleLowerRightCornerCurserTexture,
-                                Texture2D scaleLowerLeftCornerCurserTexture)
+                                Texture2D scaleLowerLeftCornerCurserTexture,
+                                Texture2D moveCursorTexture)
         {
             this.triggerDistance = triggerDistance;
             this.transformTarget = transformTarget;
@@ -39,6 +42,7 @@ namespace com.halbach.imageselection.input {
             this.scaleUpperRightCornerCurserTexture = scaleUpperRightCornerCurserTexture;
             this.scaleLowerLeftCornerCurserTexture = scaleLowerLeftCornerCurserTexture;
             this.scaleLowerRightCornerCurserTexture = scaleLowerRightCornerCurserTexture;
+            this.moveCursorTexture = moveCursorTexture;
 
             currentMousePosition = Vector2.zero;
 
@@ -49,17 +53,18 @@ namespace com.halbach.imageselection.input {
 
         private void FillMouseCursorTextureArray()
         {
-            mouseCursorTextures = new Texture2D[5];
-            mouseCursorTextures[(int)RectCorner.UPPER_LEFT] = scaleUpperLeftCornerCurserTexture;
-            mouseCursorTextures[(int)RectCorner.UPPER_RIGHT] = scaleUpperRightCornerCurserTexture;
-            mouseCursorTextures[(int)RectCorner.LOWER_LEFT] = scaleLowerLeftCornerCurserTexture;
-            mouseCursorTextures[(int)RectCorner.LOWER_RIGHT] = scaleLowerRightCornerCurserTexture;
-            mouseCursorTextures[(int) RectCorner.NO_CORNER] = defaultCursorTexture;
+            mouseCursorTextures = new Texture2D[6];
+            mouseCursorTextures[(int)TargetMousePosition.UPPER_LEFT] = scaleUpperLeftCornerCurserTexture;
+            mouseCursorTextures[(int)TargetMousePosition.UPPER_RIGHT] = scaleUpperRightCornerCurserTexture;
+            mouseCursorTextures[(int)TargetMousePosition.LOWER_LEFT] = scaleLowerLeftCornerCurserTexture;
+            mouseCursorTextures[(int)TargetMousePosition.LOWER_RIGHT] = scaleLowerRightCornerCurserTexture;
+            mouseCursorTextures[(int)TargetMousePosition.MOUSE_OVER] = moveCursorTexture;
+            mouseCursorTextures[(int) TargetMousePosition.NO_CORNER] = defaultCursorTexture;
         }
 
         protected void InitializeState()
         {
-            mouseCorner = RectCorner.NO_CORNER;
+            mouseCorner = TargetMousePosition.NO_CORNER;
             ChangeCursorTexture();
             PrintTriggerMessage(mouseCorner.ToString());
         }
@@ -112,7 +117,7 @@ namespace com.halbach.imageselection.input {
             }
             else if(MouseIsOverTransformTarget())
             {
-                mouseOverState = HandleNotTriggerd();
+                mouseOverState = HandleMouseOver();
             }
 
             return mouseOverState;
@@ -138,19 +143,19 @@ namespace com.halbach.imageselection.input {
         }
 
         private bool TriggersUpperLeftCorner(Vector3[] transformTargetCorners){
-            return TriggersCorner((int)RectCorner.UPPER_LEFT, transformTargetCorners);
+            return TriggersCorner((int)TargetMousePosition.UPPER_LEFT, transformTargetCorners);
         }
 
         private bool TriggersUpperRightCorner(Vector3[] transformTargetCorners){
-            return TriggersCorner((int)RectCorner.UPPER_RIGHT, transformTargetCorners);
+            return TriggersCorner((int)TargetMousePosition.UPPER_RIGHT, transformTargetCorners);
         }
 
         private bool TriggersLowerRightCorner(Vector3[] transformTargetCorners){
-            return TriggersCorner((int)RectCorner.LOWER_RIGHT, transformTargetCorners);
+            return TriggersCorner((int)TargetMousePosition.LOWER_RIGHT, transformTargetCorners);
         }
 
         private bool TriggersLowerLeftCorner(Vector3[] transformTargetCorners){
-            return TriggersCorner((int)RectCorner.LOWER_LEFT, transformTargetCorners);
+            return TriggersCorner((int)TargetMousePosition.LOWER_LEFT, transformTargetCorners);
         }
 
         private bool MouseIsOverTransformTarget() {
@@ -158,30 +163,30 @@ namespace com.halbach.imageselection.input {
         }
 
         private IMouseInputState HandleUpperLeftTriggered() {
-            RectCorner corner = RectCorner.UPPER_LEFT;
+            TargetMousePosition corner = TargetMousePosition.UPPER_LEFT;
             
             return HandleCornerTriggered(corner);
         }
 
         private IMouseInputState HandleUpperRightTriggered() {
-            RectCorner corner = RectCorner.UPPER_RIGHT;
+            TargetMousePosition corner = TargetMousePosition.UPPER_RIGHT;
             
             return HandleCornerTriggered(corner);
         }
 
         private IMouseInputState HandleLowerRightTriggered() {
-            RectCorner corner = RectCorner.LOWER_RIGHT;
+            TargetMousePosition corner = TargetMousePosition.LOWER_RIGHT;
 
             return HandleCornerTriggered(corner);
         }
 
         private IMouseInputState HandleLowerLeftTriggered() {
-            RectCorner corner = RectCorner.LOWER_LEFT;
+            TargetMousePosition corner = TargetMousePosition.LOWER_LEFT;
             
             return HandleCornerTriggered(corner);
         }
 
-        private IMouseInputState HandleCornerTriggered(RectCorner corner)
+        private IMouseInputState HandleCornerTriggered(TargetMousePosition corner)
         {
             IMouseInputState state = this;
             if(DoesStateChange(corner)) {
@@ -191,15 +196,18 @@ namespace com.halbach.imageselection.input {
             return state;
         }
 
-        private bool DoesStateChange(RectCorner corner)
+        private bool DoesStateChange(TargetMousePosition corner)
         {
             return corner != mouseCorner;
         }
 
         private IMouseInputState HandleNotTriggerd() {
-            return new MouseInputState(RectCorner.NO_CORNER, defaultCursorTexture);
+            return new MouseInputState(TargetMousePosition.NO_CORNER, defaultCursorTexture);
         }
 
+        private IMouseInputState HandleMouseOver() {
+            return new MouseInputState(TargetMousePosition.MOUSE_OVER, moveCursorTexture);
+        }
         
         private bool TriggersCorner(int cornerIndex, Vector3[] transformTargetCorners)
         {
@@ -220,16 +228,17 @@ namespace com.halbach.imageselection.input {
             return isInTriggerDistance;
         }
 
-        private Texture2D GetCursorTexture(RectCorner corner) {
+        private Texture2D GetCursorTexture(TargetMousePosition corner) {
             return mouseCursorTextures[(int)corner];
         }
     }
 
-    public enum RectCorner {
+    public enum TargetMousePosition {
         LOWER_LEFT,
         UPPER_LEFT,
         UPPER_RIGHT,
         LOWER_RIGHT,
+        MOUSE_OVER,
         NO_CORNER
     }
 }
