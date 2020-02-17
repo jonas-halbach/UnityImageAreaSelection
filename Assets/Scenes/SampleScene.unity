@@ -547,7 +547,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   transformTarget: {fileID: 318275940}
-  triggerDistance: 10
+  triggerDistance: 25
   defaultCursorTexture: {fileID: 2800000, guid: 9ed1cb3a013b69af4bede1dabde9bdf8,
     type: 3}
   scaleUpperLeftCornerCurserTexture: {fileID: 2800000, guid: b9a640ba8014c31b1aa63a16c77364d4,
@@ -558,6 +558,7 @@ MonoBehaviour:
     type: 3}
   scaleLowerLeftCornerCurserTexture: {fileID: 2800000, guid: b9a640ba8014c31b1aa63a16c77364d4,
     type: 3}
+  moveCursorTexture: {fileID: 2800000, guid: 5e9c0e3ac262de0fdb464b323ce1790f, type: 3}
 --- !u!20 &519420031
 Camera:
   m_ObjectHideFlags: 0
