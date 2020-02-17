@@ -1,10 +1,10 @@
 using UnityEngine;
 
 namespace com.halbach.imageselection.input {
-    interface IMouseInputState
+    public interface IMouseInputState
     {
-        void MouseUp(Vector2 mousePosition);
-        void MouseDown(Vector2 mousePosition);
-        void UpdateMousePostion(Vector2 mousePosition);
+        IMouseInputState MouseUp(Vector2 mousePosition);
+        IMouseInputState MouseDown(Vector2 mousePosition);
+        IMouseInputState UpdateMousePostion(Vector2 mousePosition);
     }
 }

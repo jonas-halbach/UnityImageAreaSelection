@@ -3,14 +3,26 @@ using UnityEngine;
 namespace com.halbach.imageselection.input {
     public class MouseInputState : IMouseInputState
     {
-        private float triggerDistance;
-        private RectTransform transformTarget;
-        private Texture2D defaultCursorTexture;
-        private Texture2D scaleUpperLeftCornerCurserTexture;
-        private Texture2D scaleUpperRightCornerCurserTexture;
-        private Texture2D scaleLowerRightCornerCurserTexture;
-        private Texture2D scaleLowerLeftCornerCurserTexture;
-        private Vector2 currentMousePosition;
+        protected float triggerDistance;
+        protected RectTransform transformTarget;
+        protected Texture2D defaultCursorTexture;
+        protected Texture2D scaleUpperLeftCornerCurserTexture;
+        protected Texture2D scaleUpperRightCornerCurserTexture;
+        protected Texture2D scaleLowerRightCornerCurserTexture;
+        protected Texture2D scaleLowerLeftCornerCurserTexture;
+
+        protected Texture2D[] mouseCursorTextures;
+        protected Vector2 currentMousePosition;
+
+        private Texture2D mouseCursorTexture;
+        private RectCorner mouseCorner;
+
+        public MouseInputState(RectCorner mouseCorner, Texture2D mouseCursorTexture) {
+            this.mouseCorner = mouseCorner;
+            this.mouseCursorTexture = mouseCursorTexture;
+
+            InitializeState();
+        }
 
         public MouseInputState(float triggerDistance,
                                 RectTransform transformTarget,
@@ -23,50 +35,96 @@ namespace com.halbach.imageselection.input {
             this.triggerDistance = triggerDistance;
             this.transformTarget = transformTarget;
             this.defaultCursorTexture = defaultCursorTexture;
-            this.scaleLowerLeftCornerCurserTexture = scaleUpperLeftCornerCurserTexture;
+            this.scaleUpperLeftCornerCurserTexture = scaleUpperLeftCornerCurserTexture;
             this.scaleUpperRightCornerCurserTexture = scaleUpperRightCornerCurserTexture;
             this.scaleLowerLeftCornerCurserTexture = scaleLowerLeftCornerCurserTexture;
             this.scaleLowerRightCornerCurserTexture = scaleLowerRightCornerCurserTexture;
 
             currentMousePosition = Vector2.zero;
+
+            FillMouseCursorTextureArray();
+
+            InitializeState();
         }
 
-        public void UpdateMousePostion(Vector2 mousePosition)
-        {            
+        private void FillMouseCursorTextureArray()
+        {
+            mouseCursorTextures = new Texture2D[5];
+            mouseCursorTextures[(int)RectCorner.UPPER_LEFT] = scaleUpperLeftCornerCurserTexture;
+            mouseCursorTextures[(int)RectCorner.UPPER_RIGHT] = scaleUpperRightCornerCurserTexture;
+            mouseCursorTextures[(int)RectCorner.LOWER_LEFT] = scaleLowerLeftCornerCurserTexture;
+            mouseCursorTextures[(int)RectCorner.LOWER_RIGHT] = scaleLowerRightCornerCurserTexture;
+            mouseCursorTextures[(int) RectCorner.NO_CORNER] = defaultCursorTexture;
+        }
+
+        protected void InitializeState()
+        {
+            ChangeCursorTexture();
+            PrintTriggerMessage(mouseCorner.ToString());
+        }
+
+        private void PrintTriggerMessage(string trigger) {
+            Debug.Log("Triggered: " + trigger);
+        }
+
+        private void ChangeCursorTexture()
+        {
+            ChangeCursor(mouseCursorTexture);
+        }
+
+        private void ChangeCursor(Texture2D cursorTexture) {
+            Cursor.SetCursor(cursorTexture, Vector2.zero, CursorMode.Auto);
+        }
+
+        public IMouseInputState UpdateMousePostion(Vector2 mousePosition)
+        {   
+            IMouseInputState newState;
+
             currentMousePosition = mousePosition;
+
+            newState = GetMouseOverState(mousePosition);
+
+            return newState;
+        }
+
+        private IMouseInputState GetMouseOverState(Vector2 mousePosition)
+        {
+            IMouseInputState mouseOverState = HandleNotTriggerd();
 
             Vector3[] transformTargetCorners = GetRectCorners();
             
-            if(triggersUpperLeftCorner(transformTargetCorners))
+            if(TriggersUpperLeftCorner(transformTargetCorners))
             {
-                HandleUpperLeftTriggered();
+                mouseOverState = HandleUpperLeftTriggered();
             } 
-            else if (triggersUpperRightCorner(transformTargetCorners))
+            else if (TriggersUpperRightCorner(transformTargetCorners))
             {
-                HandleUpperRightTriggered();
+                mouseOverState = HandleUpperRightTriggered();
             }
-            else if(triggersLowerRightCorner(transformTargetCorners))
+            else if(TriggersLowerRightCorner(transformTargetCorners))
             {
-                HandleLowerRightTriggered();
+                mouseOverState =  HandleLowerRightTriggered();
             }
-            else if(triggersLowerLeftCorner(transformTargetCorners))
+            else if(TriggersLowerLeftCorner(transformTargetCorners))
             {
-                HandleLowerLeftTriggered();
+                mouseOverState = HandleLowerLeftTriggered();
             }
-            else
+            else if(MouseIsOverTransformTarget())
             {
-                HandleNotTriggerd();
+                mouseOverState = HandleNotTriggerd();
             }
+
+            return mouseOverState;
         }
 
-        public void MouseDown(Vector2 mousePosition)
+        public IMouseInputState MouseDown(Vector2 mousePosition)
         {
-            
+            return this;
         }
 
-        public void MouseUp(Vector2 mousePosition)
+        public IMouseInputState MouseUp(Vector2 mousePosition)
         {
-            
+            return this;
         }
 
         private Vector3[] GetRectCorners()
@@ -78,51 +136,62 @@ namespace com.halbach.imageselection.input {
             return localSelectionCorners;
         }
 
-        private bool triggersUpperLeftCorner(Vector3[] transformTargetCorners){
-            return triggersCorner((int)RectCorners.UPPER_LEFT, transformTargetCorners);
+        private bool TriggersUpperLeftCorner(Vector3[] transformTargetCorners){
+            return TriggersCorner((int)RectCorner.UPPER_LEFT, transformTargetCorners);
         }
 
-        private bool triggersUpperRightCorner(Vector3[] transformTargetCorners){
-            return triggersCorner((int)RectCorners.UPPER_RIGHT, transformTargetCorners);
+        private bool TriggersUpperRightCorner(Vector3[] transformTargetCorners){
+            return TriggersCorner((int)RectCorner.UPPER_RIGHT, transformTargetCorners);
         }
 
-        private bool triggersLowerRightCorner(Vector3[] transformTargetCorners){
-            return triggersCorner((int)RectCorners.LOWER_RIGHT, transformTargetCorners);
+        private bool TriggersLowerRightCorner(Vector3[] transformTargetCorners){
+            return TriggersCorner((int)RectCorner.LOWER_RIGHT, transformTargetCorners);
         }
 
-        private bool triggersLowerLeftCorner(Vector3[] transformTargetCorners){
-            return triggersCorner((int)RectCorners.LOWER_LEFT, transformTargetCorners);
+        private bool TriggersLowerLeftCorner(Vector3[] transformTargetCorners){
+            return TriggersCorner((int)RectCorner.LOWER_LEFT, transformTargetCorners);
         }
 
-        private void HandleUpperLeftTriggered() {
-            ChangeToUpperLeftCursorTexture();
-            PrintTriggerMessage(RectCorners.UPPER_LEFT.ToString());
+        private bool MouseIsOverTransformTarget() {
+            return false;
         }
 
-        private void HandleUpperRightTriggered() {
-            ChangeToUpperRightCursorTexture();
-            PrintTriggerMessage(RectCorners.UPPER_RIGHT.ToString());
+        private IMouseInputState HandleUpperLeftTriggered() {
+            RectCorner corner = RectCorner.UPPER_LEFT;
+            
+            return HandleCornerTriggered(corner);
         }
 
-        private void HandleLowerRightTriggered() {
-            ChangeToLowerLeftCursorTexture();
-            PrintTriggerMessage(RectCorners.LOWER_RIGHT.ToString());
+        private IMouseInputState HandleUpperRightTriggered() {
+            RectCorner corner = RectCorner.UPPER_RIGHT;
+            
+            return HandleCornerTriggered(corner);
         }
 
-        private void HandleLowerLeftTriggered() {
-            ChangeToLowerLeftCursorTexture();
-            PrintTriggerMessage(RectCorners.LOWER_LEFT.ToString());
+        private IMouseInputState HandleLowerRightTriggered() {
+            RectCorner corner = RectCorner.LOWER_RIGHT;
+
+            return HandleCornerTriggered(corner);
         }
 
-        private void HandleNotTriggerd() {
-            ChangeToDefaultCursor();
-            PrintTriggerMessage(RectCorners.NOTHING.ToString());
+        private IMouseInputState HandleLowerLeftTriggered() {
+            RectCorner corner = RectCorner.LOWER_LEFT;
+            
+            return HandleCornerTriggered(corner);
         }
 
-        private void PrintTriggerMessage(string trigger) {
-            Debug.Log("Triggered: " + trigger);
+        private IMouseInputState HandleCornerTriggered(RectCorner corner)
+        {
+            Texture2D cursorTexture = GetCursorTexture(corner);
+            return new MouseOverCornerState(corner, cursorTexture);
         }
-        private bool triggersCorner(int cornerIndex, Vector3[] transformTargetCorners)
+
+        private IMouseInputState HandleNotTriggerd() {
+            return new MouseInputState(RectCorner.NO_CORNER, defaultCursorTexture);
+        }
+
+        
+        private bool TriggersCorner(int cornerIndex, Vector3[] transformTargetCorners)
         {
             Vector3 cornerInWorldCoordinates = transformTargetCorners[cornerIndex];
             Vector3 cornerInScreenCoordinates = Camera.main.WorldToScreenPoint(cornerInWorldCoordinates);
@@ -141,42 +210,16 @@ namespace com.halbach.imageselection.input {
             return isInTriggerDistance;
         }
 
-        private void ChangeToUpperLeftCursorTexture()
-        {
-            ChangeCursor(scaleUpperLeftCornerCurserTexture);
-        }
-
-        private void ChangeToUpperRightCursorTexture()
-        {
-            ChangeCursor(scaleUpperRightCornerCurserTexture);
-        }
-
-        private void ChangeToLowerRightCursorTexture()
-        {
-            ChangeCursor(scaleLowerRightCornerCurserTexture);
-        }
-
-        private void ChangeToLowerLeftCursorTexture()
-        {
-            ChangeCursor(scaleLowerLeftCornerCurserTexture);
-        }
-
-        private void ChangeToDefaultCursor()
-        {
-            ChangeCursor(defaultCursorTexture);
-        }
-
-        private void ChangeCursor(Texture2D cursorTexture) {
-            Cursor.SetCursor(cursorTexture, Vector2.zero, CursorMode.Auto);
+        private Texture2D GetCursorTexture(RectCorner corner) {
+            return mouseCursorTextures[(int)corner];
         }
     }
 
-    enum RectCorners {
+    public enum RectCorner {
         LOWER_LEFT,
         UPPER_LEFT,
         UPPER_RIGHT,
         LOWER_RIGHT,
-        
-        NOTHING
+        NO_CORNER
     }
 }
