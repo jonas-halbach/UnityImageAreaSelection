@@ -326,6 +326,7 @@ GameObject:
   - component: {fileID: 318275942}
   - component: {fileID: 318275943}
   - component: {fileID: 318275944}
+  - component: {fileID: 318275945}
   m_Layer: 5
   m_Name: Selection
   m_TagString: Untagged
@@ -458,15 +459,34 @@ MonoBehaviour:
   triggerDistance: 25
   defaultCursorTexture: {fileID: 2800000, guid: 9ed1cb3a013b69af4bede1dabde9bdf8,
     type: 3}
-  scaleUpperLeftCornerCurserTexture: {fileID: 2800000, guid: b9a640ba8014c31b1aa63a16c77364d4,
-    type: 3}
-  scaleUpperRightCornerCurserTexture: {fileID: 2800000, guid: b9a640ba8014c31b1aa63a16c77364d4,
-    type: 3}
-  scaleLowerRightCornerCurserTexture: {fileID: 2800000, guid: b9a640ba8014c31b1aa63a16c77364d4,
-    type: 3}
-  scaleLowerLeftCornerCurserTexture: {fileID: 2800000, guid: b9a640ba8014c31b1aa63a16c77364d4,
-    type: 3}
-  moveCursorTexture: {fileID: 2800000, guid: 5e9c0e3ac262de0fdb464b323ce1790f, type: 3}
+  mouseCursorTextureContainer: {fileID: 318275945}
+--- !u!114 &318275945
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 318275939}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8e5b0bf822ddb7e739c4950da5be9e7e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  initializableTextures:
+  - key: 0
+    value: {fileID: 2800000, guid: b9a640ba8014c31b1aa63a16c77364d4, type: 3}
+  - key: 3
+    value: {fileID: 2800000, guid: b9a640ba8014c31b1aa63a16c77364d4, type: 3}
+  - key: 1
+    value: {fileID: 2800000, guid: b9a640ba8014c31b1aa63a16c77364d4, type: 3}
+  - key: 2
+    value: {fileID: 2800000, guid: b9a640ba8014c31b1aa63a16c77364d4, type: 3}
+  - key: 5
+    value: {fileID: 2800000, guid: 9ed1cb3a013b69af4bede1dabde9bdf8, type: 3}
+  - key: 4
+    value: {fileID: 2800000, guid: 5e9c0e3ac262de0fdb464b323ce1790f, type: 3}
+  defaultCursorSize: 25
+  triggerDistance: 25
 --- !u!1 &382214293
 GameObject:
   m_ObjectHideFlags: 0
