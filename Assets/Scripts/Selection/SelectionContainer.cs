@@ -33,8 +33,6 @@ namespace com.halbach.imageselection.selection
 
         private void Initialize()
         {
-
-
             if ( parentImage == null )
             {
                 parentImage = GetComponentInParent<Image>();
