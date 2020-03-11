@@ -2,8 +2,10 @@ using UnityEngine;
 namespace com.halbach.imageselection.input {
     public class MouseOverCornerState : MouseInputState
     {
-        public MouseOverCornerState(TargetMousePosition mouseCorner, Texture2D mouseCursorTexture) : base(mouseCorner, mouseCursorTexture) {
+        public MouseOverCornerState(TargetMousePosition mouseCorner, MousePropertyContainer mousePropertyContainer, RectTransform transformTarget) : 
+                                    base(mouseCorner, mousePropertyContainer, transformTarget) {
          
         }
+
     }
 }
