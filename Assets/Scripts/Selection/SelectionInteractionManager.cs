@@ -1,17 +1,13 @@
 ﻿using UnityEngine;
-using UnityEngine.UI;
+using com.halbach.imageselection.input;
 
 namespace com.halbach.imageselection.selection
 {
+    public delegate void SelectionUpdatedEventHandler(object sender, Rect selectionRect);
+
     public class SelectionInteractionManager : MonoBehaviour {
 
-        public delegate void SelectionUpdatedEventHandler(object sender, Rect selectionRect);
-
         public event SelectionUpdatedEventHandler SelectionUpdated;
-
-        private bool mouseDown = false;
-
-        private Vector3 lastMousePosition;
 
         [SerializeField]
         private RectTransform rectTransform;
@@ -26,43 +22,19 @@ namespace com.halbach.imageselection.selection
 
         private Rect currentSelection;
 
+        private MouseInput input;
+
         private void Start()
         {
             InitializeCollider();
             InitializeSelection();
+            InitializeEvents();
         }
 
-        private void OnMouseDown()
+        private void OnSelectionRectChanged()
         {
-            mouseDown = true;
-            lastMousePosition = Input.mousePosition;
-        }
-
-        private void OnMouseUp()
-        {
-            mouseDown = false;
-        }
-
-        private void OnMouseDrag()
-        {
-            Vector3 currentMousePosition = Input.mousePosition;
-            Vector3 delta = lastMousePosition - currentMousePosition;
-            lastMousePosition = currentMousePosition;
-
-            delta *= movingSpeed;
-
-            UpdateSelectionIndicatorPosition(delta);
-        }
-
-        private void UpdateSelectionIndicatorPosition(Vector3 delta)
-        {
-            Vector3 oldRectPosition = rectTransform.position;
-            oldRectPosition.x -= delta.x;
-            oldRectPosition.y -= delta.y;
-            rectTransform.position = oldRectPosition;
             UpdateSelection();
             Debug.Log(currentSelection);
-
         }
 
         private void InitializeCollider()
@@ -81,6 +53,30 @@ namespace com.halbach.imageselection.selection
             UpdateSelection();
         }
 
+        private void InitializeEvents()
+        {
+            input = GetComponent<MouseInput>();
+            if(input != null)
+            {
+                input.OnSelectionMoved += OnUpdateSelection;
+            }
+        }
+
+        private void UpdateSelectionIndicatorPosition(Vector3 delta)
+        {
+            Vector3 oldRectPosition = rectTransform.position;
+            oldRectPosition.x -= delta.x;
+            oldRectPosition.y -= delta.y;
+            rectTransform.position = oldRectPosition;
+
+            UpdateSelection();
+        }
+
+        private void OnUpdateSelection(object sender, Vector3 delta)
+        {
+            UpdateSelectionIndicatorPosition(delta);
+        }
+
         private void UpdateSelection()
         {
             RectTransform selection = this.rectTransform;
@@ -91,8 +87,6 @@ namespace com.halbach.imageselection.selection
 
             Vector3 upperLeftSelectionCorner = localSelectionCorners[0];
             Vector3 lowerRightSelectionCorner = localSelectionCorners[2];
-
-            
 
             Debug.Log("Upper left selection corner: " + upperLeftSelectionCorner + " lower right selection corner: " + lowerRightSelectionCorner);
 
