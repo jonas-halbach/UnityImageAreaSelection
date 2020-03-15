@@ -79,46 +79,17 @@ namespace com.halbach.imageselection.selection
 
         private void UpdateSelection()
         {
-            RectTransform selection = this.rectTransform;
+            SelectionToScreenSpaceConverter converter = new SelectionToScreenSpaceConverter(this.rectTransform, previewRenderCamera);
+        
+            Vector3 upperLeftCornerScreenspace  = converter.UpperLeftCornerScreenSpace;
 
-            Vector3[] localSelectionCorners = new Vector3[4];
-
-            selection.GetWorldCorners(localSelectionCorners);
-
-            Vector3 upperLeftSelectionCorner = localSelectionCorners[0];
-            Vector3 lowerRightSelectionCorner = localSelectionCorners[2];
-
-            Debug.Log("Upper left selection corner: " + upperLeftSelectionCorner + " lower right selection corner: " + lowerRightSelectionCorner);
-
-            Vector4 upperLeftCornerScreenspace = TransformToScreenSpace(upperLeftSelectionCorner.x, upperLeftSelectionCorner.y); 
             currentSelection.x = upperLeftCornerScreenspace.x;
             currentSelection.y = upperLeftCornerScreenspace.y;
 
-            Vector4 lowerRightCornerScreenSpace = TransformToScreenSpace(lowerRightSelectionCorner.x, lowerRightSelectionCorner.y); 
-            
-            Vector4 diagonalVector = lowerRightCornerScreenSpace - upperLeftCornerScreenspace;
-
-            currentSelection.width = diagonalVector.x;
-            currentSelection.height = diagonalVector.y;
+            currentSelection.width = converter.WidthScreenSpace;
+            currentSelection.height = converter.HeightScreenSpace;
 
             RaiseSelectionUpdatedEvent();
-        }
-
-        private Vector2 TransformToScreenSpace(float x, float y)
-        {
-            Vector4 pointInWorldSpace = new Vector4(x, y, 0, 1);
-            return TransformToScreenSpace(pointInWorldSpace);
-        } 
-
-        private Vector4 TransformToScreenSpace(Vector2 point)
-        {
-            Vector4 pointInWorldSpace = new Vector4(point.x, point.y, 0, 1);
-            return TransformToScreenSpace(pointInWorldSpace);
-        }
-
-        private Vector4 TransformToScreenSpace(Vector4 point)
-        {
-            return previewRenderCamera.WorldToScreenPoint(point);
         }
 
         private void RaiseSelectionUpdatedEvent()
