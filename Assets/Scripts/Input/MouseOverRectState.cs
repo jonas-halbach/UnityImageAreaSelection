@@ -54,8 +54,18 @@ namespace com.halbach.imageselection.input {
 
                 delta *= movingSpeed;
 
-                UpdateSelectionPosition(delta);
+                UpdateSelectionIndicatorPosition(delta);
             }
+        }
+
+        private void UpdateSelectionIndicatorPosition(Vector3 delta)
+        {
+            Vector3 oldRectPosition = transformTarget.position;
+            oldRectPosition.x -= delta.x;
+            oldRectPosition.y -= delta.y;
+            transformTarget.position = oldRectPosition;
+
+            UpdateSelection();
         }
     }
 }

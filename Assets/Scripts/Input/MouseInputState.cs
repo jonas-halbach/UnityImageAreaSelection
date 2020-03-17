@@ -3,7 +3,7 @@ using UnityEngine;
 namespace com.halbach.imageselection.input {
     public class MouseInputState : IMouseInputState
     {
-        public event SelectionMoved OnSelectionMoved;
+        public event SelectionChanged OnSelectionChanged;
         protected RectTransform transformTarget;
         protected MousePropertyContainer mousePropertyContainer;
         protected Vector2 currentMousePosition;
@@ -174,7 +174,7 @@ namespace com.halbach.imageselection.input {
             if(DoesStateChange(corner)) {
                 Texture2D cursorTexture = GetCursorTexture(corner);
                 state = new MouseOverCornerState(corner, mousePropertyContainer, transformTarget);
-                state.OnSelectionMoved += OnSelectionMoved;
+                state.OnSelectionChanged += OnSelectionChanged;
             }
             return state;
         }
@@ -188,7 +188,7 @@ namespace com.halbach.imageselection.input {
             IMouseInputState state = this;
             if(DoesStateChange(TargetMousePosition.NO_CORNER)) {
                 state = new MouseInputState(TargetMousePosition.NO_CORNER, mousePropertyContainer, transformTarget);
-                state.OnSelectionMoved += OnSelectionMoved;
+                state.OnSelectionChanged += OnSelectionChanged;
             }
 
             return state;
@@ -198,7 +198,7 @@ namespace com.halbach.imageselection.input {
             IMouseInputState state = this;
             if(DoesStateChange(TargetMousePosition.MOUSE_OVER)) {
                 state = new MouseOverRectState(TargetMousePosition.MOUSE_OVER, mousePropertyContainer, transformTarget);
-                state.OnSelectionMoved += OnSelectionMoved;
+                state.OnSelectionChanged += OnSelectionChanged;
             }
             return state;
         }
@@ -232,10 +232,10 @@ namespace com.halbach.imageselection.input {
             return mousePropertyContainer.GetTexture(corner);
         }
 
-        protected void UpdateSelectionPosition(Vector3 mouseMovementDelta) {
-            if(OnSelectionMoved != null)
+        protected void UpdateSelection() {
+            if(OnSelectionChanged != null)
             {
-                OnSelectionMoved(this, mouseMovementDelta);
+                OnSelectionChanged(this);
             }
         }
     }

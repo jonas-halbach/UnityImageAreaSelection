@@ -58,23 +58,13 @@ namespace com.halbach.imageselection.selection
             input = GetComponent<MouseInput>();
             if(input != null)
             {
-                input.OnSelectionMoved += OnUpdateSelection;
+                input.OnSelectionChanged += OnUpdateSelection;
             }
         }
 
-        private void UpdateSelectionIndicatorPosition(Vector3 delta)
+        private void OnUpdateSelection(object sender)
         {
-            Vector3 oldRectPosition = rectTransform.position;
-            oldRectPosition.x -= delta.x;
-            oldRectPosition.y -= delta.y;
-            rectTransform.position = oldRectPosition;
-
             UpdateSelection();
-        }
-
-        private void OnUpdateSelection(object sender, Vector3 delta)
-        {
-            UpdateSelectionIndicatorPosition(delta);
         }
 
         private void UpdateSelection()

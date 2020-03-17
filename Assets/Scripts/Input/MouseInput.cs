@@ -3,11 +3,11 @@
 
 namespace com.halbach.imageselection.input {
 
-    public delegate void SelectionMoved(object sender, Vector3 mouseMovementDelta);
+    public delegate void SelectionChanged(object sender);
 
     public class MouseInput : MonoBehaviour
     {
-        public event SelectionMoved OnSelectionMoved;
+        public event SelectionChanged OnSelectionChanged;
 
         [SerializeField]
         private RectTransform transformTarget;
@@ -22,14 +22,12 @@ namespace com.halbach.imageselection.input {
         private MousePropertyContainer mouseCursorTextureContainer;
         private IMouseInputState mouseInputState;
 
-        // Start is called before the first frame update
         void Start()
         {
             mouseInputState = new MouseInputState(mouseCursorTextureContainer, transformTarget);
-            mouseInputState.OnSelectionMoved += OnSelectionMoved;
+            mouseInputState.OnSelectionChanged += OnSelectionChanged;
         }
 
-        // Update is called once per frame
         void Update()
         {
             UpdateMousePos(); 
