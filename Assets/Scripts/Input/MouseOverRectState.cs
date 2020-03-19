@@ -19,15 +19,9 @@ namespace com.halbach.imageselection.input {
 
         public override IMouseInputState UpdateMousePostion(Vector2 mousePosition)
         {   
-            IMouseInputState newState;
-
             currentMousePosition = mousePosition;
 
-            newState = GetMouseOverState(mousePosition);
-
-            OnMouseMove();
-
-            return newState;
+            return OnMouseMove(mousePosition);
         }
 
         public override IMouseInputState MouseDown(Vector2 mousePosition)
@@ -44,18 +38,38 @@ namespace com.halbach.imageselection.input {
             return this;
         }
 
-        private void OnMouseMove()
+        private IMouseInputState OnMouseMove(Vector2 mousePosition)
         {
+            IMouseInputState newState = this;
+
             if(mouseDown)
             {
-                Vector3 currentMousePosition = Input.mousePosition;
-                Vector3 delta = lastMousePosition - currentMousePosition;
-                lastMousePosition = currentMousePosition;
-
-                delta *= movingSpeed;
+                Vector3 delta = CalculateChangeVector(mousePosition);
 
                 UpdateSelectionIndicatorPosition(delta);
             }
+            else
+            {
+                newState = GetMouseOverState(mousePosition);
+            }
+            lastMousePosition = currentMousePosition;
+
+            return newState;
+        }
+
+        private Vector3 CalculateChangeVector(Vector3 mousePosition)
+        {
+            Vector3 delta = CalculateMouseMovementDelta(mousePosition);
+            delta *= movingSpeed;
+            return delta;
+        }
+
+        private Vector3 CalculateMouseMovementDelta(Vector3 newMoousePostion)
+        {
+            Vector3 currentMousePosition = newMoousePostion;
+            Vector3 delta = lastMousePosition - currentMousePosition;
+
+            return delta;
         }
 
         private void UpdateSelectionIndicatorPosition(Vector3 delta)
