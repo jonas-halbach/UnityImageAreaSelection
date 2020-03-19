@@ -38,12 +38,13 @@ namespace com.halbach.imageselection.input {
             mouseInputState = mouseInputState.UpdateMousePostion(Input.mousePosition);
         } 
 
-        void OnMouseDown() {
-             mouseInputState = mouseInputState.MouseDown(Input.mousePosition);
+        void OnMouseDown() 
+        {
+            mouseInputState = mouseInputState.MouseDown(Input.mousePosition);
         }
 
         void OnMouseUp() {
-             mouseInputState = mouseInputState.MouseUp(Input.mousePosition);
+            mouseInputState = mouseInputState.MouseUp(Input.mousePosition);
         }
     }
 }
