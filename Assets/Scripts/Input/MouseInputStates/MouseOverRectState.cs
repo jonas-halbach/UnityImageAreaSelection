@@ -1,6 +1,7 @@
 using UnityEngine;
 
 namespace com.halbach.imageselection.input {
+    
     public class MouseOverRectState : MouseInputState
     {
         private Texture2D mouseOverRectTexture;
