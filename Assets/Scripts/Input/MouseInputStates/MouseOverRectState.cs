@@ -11,7 +11,7 @@ namespace com.halbach.imageselection.input {
         {
         }
 
-        protected override void UpdateSelectionIndicatorPosition(Vector3 delta)
+        protected override void UpdateSelection(Vector3 delta)
         {
             Vector3 oldRectPosition = transformTarget.position;
             oldRectPosition.x -= delta.x;

@@ -48,7 +48,7 @@ namespace com.halbach.imageselection.input {
             {
                 Vector3 delta = CalculateChangeVector(mousePosition);
 
-                UpdateSelectionIndicatorPosition(delta);
+                UpdateSelection(delta);
             }
             else
             {
@@ -74,6 +74,6 @@ namespace com.halbach.imageselection.input {
             return delta;
         }
 
-        protected abstract void UpdateSelectionIndicatorPosition(Vector3 delta);
+        protected abstract void UpdateSelection(Vector3 delta);
     }
 }
