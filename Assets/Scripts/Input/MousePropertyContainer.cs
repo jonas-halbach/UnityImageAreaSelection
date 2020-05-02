@@ -27,7 +27,7 @@ namespace com.halbach.imageselection.input {
             }
             set
             {
-                 triggerDistance = value;
+                triggerDistance = value;
             }
         }
 
