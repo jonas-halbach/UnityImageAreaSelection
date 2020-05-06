@@ -21,15 +21,14 @@ namespace com.halbach.imageselection.input {
             Vector3[] rectCornersAfterResizing = new Vector3[4];
 
             RectScaler scaler = new RectScaler(transformTarget);
-            
 
             transformTarget.GetWorldCorners(rectCornersBeforeResizing);
 
-            int horizontalMultiplicator = GetHorizontalMultiplicator();
-            int verticalMultiplicator = GetVerticalMultiplicator();
+            float newHorizontalSize = CalculateUpdatedHorizontalSize(delta);
+            float newVerticalSize = CalculateUpdatedVerticalSize(delta);
 
-            transformTarget.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, transformTarget.rect.size.x - (horizontalMultiplicator * delta.x));
-            transformTarget.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, transformTarget.rect.size.y + (verticalMultiplicator * delta.y));
+            transformTarget.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, newHorizontalSize);
+            transformTarget.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, newVerticalSize);
 
             transformTarget.GetWorldCorners(rectCornersAfterResizing);
 
@@ -40,6 +39,25 @@ namespace com.halbach.imageselection.input {
             UpdateSelection();
         }
 
+        private float CalculateUpdatedVerticalSize(Vector3 delta) {
+            int verticalMultiplicator = GetVerticalMultiplicator();
+            float newVerticalSize = transformTarget.rect.size.y + (verticalMultiplicator * delta.y);
+
+            newVerticalSize = Mathf.Max(newVerticalSize,mousePropertyContainer.MinimumHeight);
+            newVerticalSize = Mathf.Min(newVerticalSize,mousePropertyContainer.MaximumHeight);
+
+            return newVerticalSize;
+        }
+
+        private float CalculateUpdatedHorizontalSize(Vector3 delta) {
+            int horizontalMultiplicator = GetHorizontalMultiplicator();
+            float newHorizontalSize = transformTarget.rect.size.x - (horizontalMultiplicator * delta.x);
+
+            newHorizontalSize = Mathf.Max(newHorizontalSize, mousePropertyContainer.MinimumWidth);
+            newHorizontalSize = Mathf.Min(newHorizontalSize, mousePropertyContainer.MaximumWidth);
+
+            return newHorizontalSize;
+        }
         private Vector3 MaxMovementDelta(Vector3[] rectCornersBeforeResizing, Vector3[] rectCornersAfterResizing, int index) {
             
             Vector3 delta = rectCornersBeforeResizing[index] - rectCornersAfterResizing[index];
