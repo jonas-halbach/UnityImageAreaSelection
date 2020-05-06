@@ -18,6 +18,18 @@ namespace com.halbach.imageselection.input {
         [SerializeField]
         private int triggerDistance = 25;
 
+        [SerializeField]
+        private float minimumWidth = 0.5f;
+
+        [SerializeField]
+        private float minimumHeight = 0.5f;
+
+        [SerializeField]
+        private float maximumWidth = 3;
+
+        [SerializeField]
+        private float maximumHeight = 3;
+
         private Texture2D emptyTexture;
 
         public int TriggerDistance {
@@ -29,6 +41,29 @@ namespace com.halbach.imageselection.input {
             {
                 triggerDistance = value;
             }
+        }
+
+        public float MinimumHeight {
+            get { return minimumHeight; }
+            set { minimumHeight = value; }
+        }
+
+        public float MinimumWidth {
+            get { return minimumWidth; }
+            set { minimumWidth = value; }
+        }
+
+
+        public float MaximumHeight {
+            get { return maximumHeight; }
+            set {maximumHeight = value;}
+
+        }
+
+        public float MaximumWidth {
+            get { return maximumWidth; }
+            set {maximumWidth = value;}
+
         }
 
         void Start()
