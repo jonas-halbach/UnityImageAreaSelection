@@ -75,20 +75,45 @@ namespace com.halbach.imageselection.selection
         {
             if(updatePreviewOnSelectionChange) {
                 if (imageSelection != null ) {
-                    gameCamera.targetTexture = imageSelection;
-                    Texture2D tex = GetRTPixels(imageSelection);
-                    Color[] imageColors = tex.GetPixels();
 
-                    ImageSelectionExtractor selectionExtractor = new ImageSelectionExtractor(imageColors, imageSelection.width, imageSelection.height);
+                    Color[] selectedImageExtraction = GrabSelectionImage(selectionRect);
 
-                    imageColors = selectionExtractor.ExtractSection(selectionRect);
-
-                    imageConverter = new ImageConverter((int)selectionRect.width, (int)selectionRect.height, outPutImageSize.x, outPutImageSize.y);
-                    Color[] scaledImage = imageConverter.ResizeImage(imageColors);
-                    
-                    UpdatePreviewImage(scaledImage);
+                    UpdatePreviewImage(selectedImageExtraction);
                 }
             }
+        }
+
+        private Color[] GrabSelectionImage(Rect selectionRect) {
+                    Color[] imageColors = CaptureCameraImage();
+
+                    Color[] extractedSection = ExtractSection(imageColors, selectionRect);
+
+                    Color[] transformedImage = TransformImageDimensions(extractedSection, selectionRect, outPutImageSize);
+                    
+                    return transformedImage;
+        }
+
+        private Color[] CaptureCameraImage() {
+            gameCamera.targetTexture = imageSelection;
+            Texture2D tex = GetRTPixels(imageSelection);
+            Color[] imageColors = tex.GetPixels();
+
+            return imageColors;
+        }
+
+        private Color[] ExtractSection(Color[] imageColors, Rect selectionRect)
+        {
+            ImageSelectionExtractor selectionExtractor = new ImageSelectionExtractor(imageColors, imageSelection.width, imageSelection.height);
+            Color[] extractedSection = selectionExtractor.ExtractSection(selectionRect);
+
+            return extractedSection;
+        }
+
+        private Color[] TransformImageDimensions(Color[] inputImage, Rect selectionRect, Vector2Int outPutImageSize) {
+            imageConverter = new ImageConverter((int)selectionRect.width, (int)selectionRect.height, outPutImageSize.x, outPutImageSize.y);
+            Color[] scaledImage = imageConverter.ResizeImage(inputImage);
+
+            return scaledImage;
         }
 
         /// <summary>
