@@ -17,6 +17,9 @@ namespace com.halbach.imageselection.selection
         [SerializeField]
         private Image previewImage;
 
+        [SerializeField]
+        private bool updatePreviewOnSelectionChange = false;
+
         SelectionInteractionManager selectionInteractionmanager;
 
         private RenderTexture imageSelection;
@@ -70,20 +73,21 @@ namespace com.halbach.imageselection.selection
 
         private void SelectionUpdated(object sender, Rect selectionRect )
         {
-            if ( imageSelection != null )
-            {
-                gameCamera.targetTexture = imageSelection;
-                Texture2D tex = GetRTPixels(imageSelection);
-                Color[] imageColors = tex.GetPixels();
+            if(updatePreviewOnSelectionChange) {
+                if (imageSelection != null ) {
+                    gameCamera.targetTexture = imageSelection;
+                    Texture2D tex = GetRTPixels(imageSelection);
+                    Color[] imageColors = tex.GetPixels();
 
-                ImageSelectionExtractor selectionExtractor = new ImageSelectionExtractor(imageColors, imageSelection.width, imageSelection.height);
+                    ImageSelectionExtractor selectionExtractor = new ImageSelectionExtractor(imageColors, imageSelection.width, imageSelection.height);
 
-                imageColors = selectionExtractor.ExtractSection(selectionRect);
+                    imageColors = selectionExtractor.ExtractSection(selectionRect);
 
-                imageConverter = new ImageConverter((int)selectionRect.width, (int)selectionRect.height, outPutImageSize.x, outPutImageSize.y);
-                Color[] scaledImage = imageConverter.ResizeImage(imageColors);
-                
-                UpdatePreviewImage(scaledImage);
+                    imageConverter = new ImageConverter((int)selectionRect.width, (int)selectionRect.height, outPutImageSize.x, outPutImageSize.y);
+                    Color[] scaledImage = imageConverter.ResizeImage(imageColors);
+                    
+                    UpdatePreviewImage(scaledImage);
+                }
             }
         }
 
