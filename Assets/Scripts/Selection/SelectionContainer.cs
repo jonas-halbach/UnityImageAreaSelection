@@ -120,29 +120,5 @@ namespace com.halbach.imageselection.selection
                 previewImage.sprite.texture.Apply();
             }
         }
-
-        private Color[] GetRandomColorArray(int width, int height, int colorCount)
-        {
-            Color[] colors = new Color[width * height];
-            Color[] imageColors = new Color[colorCount];
-            System.Random random = new System.Random();
-            
-            
-            for(int i = 0; i < imageColors.Length; i++)
-            {
-                float r = 1.0f / random.Next(50);
-                float g = 1.0f / random.Next(50);
-                float b = 1.0f / random.Next(50);
-
-                imageColors[i] = new Color(r, g, b);
-            }
-
-            for(int i = 0; i < colors.Length; i++)
-            {
-                colors[i] = imageColors[random.Next(colorCount)];
-            }
-
-            return colors;
-        }
     }
 }
