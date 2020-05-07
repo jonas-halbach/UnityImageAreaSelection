@@ -36,7 +36,6 @@ namespace com.halbach.imageselection.selection
             if ( parentImage == null )
             {
                 parentImage = GetComponentInParent<Image>();
-                Debug.Log("BG Image: " + parentImage.rectTransform.rect);
             }
 
             if( selectionInteractionmanager == null)
@@ -73,23 +72,13 @@ namespace com.halbach.imageselection.selection
         {
             if ( imageSelection != null )
             {
-                Debug.Log("Selection updated: " + sender);
-
                 gameCamera.targetTexture = imageSelection;
                 Texture2D tex = GetRTPixels(imageSelection);
                 Color[] imageColors = tex.GetPixels();
 
-                Debug.LogWarning("SelectionRect, width:" + selectionRect.width + " height: " + selectionRect.height);
-
                 ImageSelectionExtractor selectionExtractor = new ImageSelectionExtractor(imageColors, imageSelection.width, imageSelection.height);
 
-                //selectionRect = new Rect (0, 0, 724, 724);
-
                 imageColors = selectionExtractor.ExtractSection(selectionRect);
-                //gameCamera.targetTexture = null;
-                
-                //Color[] imageColors = GetRandomColorArray(tex.width, tex.height, 50);
-                //Color[] imageColors = tex.GetPixels((int)selectionRect.x, (int)selectionRect.y, (int)selectionRect.width, (int)selectionRect.height);
 
                 imageConverter = new ImageConverter((int)selectionRect.width, (int)selectionRect.height, outPutImageSize.x, outPutImageSize.y);
                 Color[] scaledImage = imageConverter.ResizeImage(imageColors);
@@ -127,7 +116,6 @@ namespace com.halbach.imageselection.selection
         {
             if ( previewImage != null )
             {
-                Debug.Log("PreviewImageRect: " + previewImage.rectTransform.rect);
                 previewImage.sprite.texture.SetPixels(image);
                 previewImage.sprite.texture.Apply();
             }
