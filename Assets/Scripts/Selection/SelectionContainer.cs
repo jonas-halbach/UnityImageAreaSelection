@@ -26,6 +26,8 @@ namespace com.halbach.imageselection.selection
 
         private ImageConverter imageConverter;
 
+        private Rect currentSelectionRect;
+
         void Start () {
             Initialize();
         }
@@ -73,6 +75,8 @@ namespace com.halbach.imageselection.selection
 
         private void SelectionUpdated(object sender, Rect selectionRect )
         {
+            currentSelectionRect = selectionRect;
+
             if(updatePreviewOnSelectionChange) {
                 if (imageSelection != null ) {
 
@@ -82,6 +86,17 @@ namespace com.halbach.imageselection.selection
                 }
             }
         }
+
+        public Color[] GrabSelectionImage() {
+            Color[] selectionImage;
+            if(currentSelectionRect != null) {
+                selectionImage = GrabSelectionImage(currentSelectionRect);
+            } else {
+                selectionImage = new Color[0];
+            }
+            return selectionImage;
+        }
+
 
         private Color[] GrabSelectionImage(Rect selectionRect) {
                     Color[] imageColors = CaptureCameraImage();
