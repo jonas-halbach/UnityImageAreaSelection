@@ -488,6 +488,10 @@ MonoBehaviour:
     value: {fileID: 2800000, guid: 5e9c0e3ac262de0fdb464b323ce1790f, type: 3}
   defaultCursorSize: 25
   triggerDistance: 25
+  minimumWidth: 0.5
+  minimumHeight: 0.5
+  maximumWidth: 3
+  maximumHeight: 3
 --- !u!114 &318275946
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -931,3 +935,4 @@ MonoBehaviour:
   gameCamera: {fileID: 1207796782}
   outPutImageSize: {x: 768, y: 768}
   previewImage: {fileID: 1703787839}
+  updatePreviewOnSelectionChange: 0
