@@ -162,6 +162,8 @@ namespace com.halbach.imageselection.selection
             {
                 previewImage.sprite.texture.SetPixels(image);
                 previewImage.sprite.texture.Apply();
+            } else {
+                Debug.LogError("You did not specify an Image on which the preview shall be rendered. Please specify a preview image!");
             }
         }
     }
