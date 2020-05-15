@@ -17,8 +17,6 @@ namespace com.halbach.imageselection.input {
 
         public override IMouseInputState MouseDown(Vector2 mousePosition)
         {
-            Debug.LogWarning("MouseDown " + this.GetType().ToString());
-
             lastMousePosition = mousePosition;
             mouseDown = true;
             return this;
@@ -41,8 +39,6 @@ namespace com.halbach.imageselection.input {
         private IMouseInputState OnMouseMove(Vector2 mousePosition)
         {
             IMouseInputState newState = this;
-
-            Debug.LogWarning("OnMouseMove " + this.GetType().ToString());
 
             if(mouseDown)
             {
