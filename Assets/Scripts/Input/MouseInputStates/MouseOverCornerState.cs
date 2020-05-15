@@ -1,5 +1,4 @@
 using UnityEngine;
-using com.halbach.imageselection.helpers;
 
 namespace com.halbach.imageselection.input {
     public class MouseOverCornerState : MouseDragState
