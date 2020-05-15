@@ -20,8 +20,6 @@ namespace com.halbach.imageselection.input {
             Vector3[] rectCornersBeforeResizing = new Vector3[4];
             Vector3[] rectCornersAfterResizing = new Vector3[4];
 
-            RectScaler scaler = new RectScaler(transformTarget);
-
             transformTarget.GetWorldCorners(rectCornersBeforeResizing);
 
             float newHorizontalSize = CalculateUpdatedHorizontalSize(delta);
