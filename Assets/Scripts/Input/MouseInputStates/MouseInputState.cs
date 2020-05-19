@@ -135,8 +135,8 @@ namespace com.halbach.imageselection.input {
 
         private bool MouseIsOverTransformTarget(Vector3[] transformTargetCorners) {
             
-            Vector3 upperLeftCornerInScreenSpace = TransformRectCornersToScreenSpace((int)TargetMousePosition.UPPER_LEFT, transformTargetCorners);
-            Vector3 lowerRighttCornerInScreenSpace = TransformRectCornersToScreenSpace((int)TargetMousePosition.LOWER_RIGHT, transformTargetCorners);
+            Vector3 upperLeftCornerInScreenSpace = GetRectCornerInWorldCoordinates((int)TargetMousePosition.UPPER_LEFT, transformTargetCorners);
+            Vector3 lowerRighttCornerInScreenSpace = GetRectCornerInWorldCoordinates((int)TargetMousePosition.LOWER_RIGHT, transformTargetCorners);
             
             bool isInsideRectWidth = currentMousePosition.x > upperLeftCornerInScreenSpace.x && currentMousePosition.x < lowerRighttCornerInScreenSpace.x;
             bool isInsideRectHeight= currentMousePosition.y < upperLeftCornerInScreenSpace.y && currentMousePosition.y > lowerRighttCornerInScreenSpace.y;
@@ -205,17 +205,16 @@ namespace com.halbach.imageselection.input {
         
         private bool TriggersCorner(int cornerIndex, Vector3[] transformTargetCorners)
         {
-            Vector3 cornerInScreenCoordinates = TransformRectCornersToScreenSpace(cornerIndex, transformTargetCorners);
+            Vector3 cornerInScreenCoordinates = GetRectCornerInWorldCoordinates(cornerIndex, transformTargetCorners);
 
             return isInTriggerDistance(cornerInScreenCoordinates, currentMousePosition);
         }
 
-        private Vector3 TransformRectCornersToScreenSpace(int cornerIndex, Vector3[] transformTargetCorners) {
+        private Vector3 GetRectCornerInWorldCoordinates(int cornerIndex, Vector3[] transformTargetCorners) {
             Vector3 cornerInWorldCoordinates = transformTargetCorners[cornerIndex];
-            Vector3 cornerInScreenCoordinates = Camera.main.WorldToScreenPoint(cornerInWorldCoordinates);
-            cornerInScreenCoordinates.z = 0;
+            cornerInWorldCoordinates.z = 0;
 
-            return cornerInScreenCoordinates;
+            return cornerInWorldCoordinates;
         }
 
         private bool isInTriggerDistance(Vector3 point1, Vector3 point2)

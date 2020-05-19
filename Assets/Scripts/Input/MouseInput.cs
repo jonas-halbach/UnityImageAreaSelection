@@ -35,16 +35,24 @@ namespace com.halbach.imageselection.input {
 
         private void UpdateMousePos()
         {
-            mouseInputState = mouseInputState.UpdateMousePostion(Input.mousePosition);
+            mouseInputState = mouseInputState.UpdateMousePostion(ConvertCurrentMousePostionToWorldSpace());
         } 
 
         void OnMouseDown() 
         {
-            mouseInputState = mouseInputState.MouseDown(Input.mousePosition);
+            mouseInputState = mouseInputState.MouseDown(ConvertCurrentMousePostionToWorldSpace());
         }
 
         void OnMouseUp() {
-            mouseInputState = mouseInputState.MouseUp(Input.mousePosition);
+            mouseInputState = mouseInputState.MouseUp(ConvertCurrentMousePostionToWorldSpace());
+        }
+
+        private Vector3 ConvertCurrentMousePostionToWorldSpace() {
+            return ConvertToWorldSpace(Input.mousePosition);
+        }
+
+        private Vector3 ConvertToWorldSpace(Vector3 vector) {
+            return Camera.main.ScreenToWorldPoint(vector);
         }
     }
 }

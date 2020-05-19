@@ -58,7 +58,6 @@ namespace com.halbach.imageselection.input {
         private Vector3 CalculateChangeVector(Vector3 mousePosition)
         {
             Vector3 delta = CalculateMouseMovementDelta(mousePosition);
-            delta *= movingSpeed;
             return delta;
         }
 
