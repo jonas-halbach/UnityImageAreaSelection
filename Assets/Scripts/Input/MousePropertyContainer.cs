@@ -16,7 +16,7 @@ namespace com.halbach.imageselection.input {
         private int defaultCursorSize = 25;
 
         [SerializeField]
-        private int triggerDistance = 25;
+        private float triggerDistance = 0.5f;
 
         [SerializeField]
         private float minimumWidth = 0.5f;
@@ -32,7 +32,7 @@ namespace com.halbach.imageselection.input {
 
         private Texture2D emptyTexture;
 
-        public int TriggerDistance {
+        public float TriggerDistance {
             get 
             {
                 return triggerDistance;
