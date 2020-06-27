@@ -4,23 +4,23 @@ public class ButtonObserver : MonoBehaviour
     [SerializeField]
     private Texture2D defaultTexture;
 
-    MeshRenderer renderer;
+    MeshRenderer backgroundRenderer;
 
     private WebCamTexture webCam;
 
     void Start() {
-        renderer = GetComponent<MeshRenderer>();
+        backgroundRenderer = GetComponent<MeshRenderer>();
         webCam = new WebCamTexture(WebCamTexture.devices[0].name);
     }
 
     public void OnActivateCameraButtonClick() {
         webCam.Play();
-        renderer.material.mainTexture = webCam;
+        backgroundRenderer.material.mainTexture = webCam;
     }
 
     public void OnResetToDeaultButtonClick() {
         webCam.Stop();
-        renderer.material.mainTexture = defaultTexture;
+        backgroundRenderer.material.mainTexture = defaultTexture;
 
     }
 }
