@@ -98,5 +98,31 @@ namespace com.halbach.imageselection.input {
             return texture;
         }
 
+        public float CalculateUpdatedVerticalSize(Vector3 delta, Rect rect) {
+            return CalculateUpdatedVerticalSize(delta, rect, 1);
+        }
+
+        public float CalculateUpdatedVerticalSize(Vector3 delta, Rect rect, int verticalMultiplicator) {
+            float newVerticalSize = rect.size.y + (verticalMultiplicator * delta.y);
+
+            newVerticalSize = Mathf.Max(newVerticalSize, MinimumHeight);
+            newVerticalSize = Mathf.Min(newVerticalSize, MaximumHeight);
+
+            return newVerticalSize;
+        }
+
+        public float CalculateUpdatedHorizontalSize(Vector3 delta, Rect rect)
+        {
+            return CalculateUpdatedHorizontalSize(delta, rect, 1);
+        }
+        public float CalculateUpdatedHorizontalSize(Vector3 delta, Rect rect, int horizontalMultiplicator) {
+            float newHorizontalSize = rect.size.x - (horizontalMultiplicator * delta.x);
+
+            newHorizontalSize = Mathf.Max(newHorizontalSize, MinimumWidth);
+            newHorizontalSize = Mathf.Min(newHorizontalSize, MaximumWidth);
+
+            return newHorizontalSize;
+        }
+
     }
 }
