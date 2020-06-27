@@ -11,6 +11,9 @@ namespace com.halbach.imageselection.input {
         MobileInputStateEvaluator stateEvaluator;
 
         protected override void InitializeInternal(RectTransform transformTarget, BoxCollider2D selectionRectCollider, Camera renderCamera) {
+
+            InitializePropertyContainer();
+
             currentState = new MobileInputState(transformTarget);
 
             stateEvaluator = new MobileInputStateEvaluator(renderCamera, transformTarget, selectionRectCollider);

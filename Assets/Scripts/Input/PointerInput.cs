@@ -6,13 +6,16 @@ namespace com.halbach.imageselection.input {
     public abstract class PointerInput : MonoBehaviour, IPointerInput
     {
         public event SelectionChanged OnSelectionChanged;
+
+        [SerializeField]
+        protected InputPropertyContainer mousePropertyContainer;
         private bool isInitialized = false;
 
         protected InputState pointerState;
 
         public void Initialize(RectTransform transformTarget, BoxCollider2D selectionRectCollider, Camera renderCamera)
         {
-            
+            InitializePropertyContainer();
             InitializeInternal(transformTarget, selectionRectCollider, renderCamera);
             isInitialized = true;
         }
@@ -37,6 +40,12 @@ namespace com.halbach.imageselection.input {
 
         public void AddOnSelectionChangedEvent(SelectionChanged selectionChangedEvent) {
             OnSelectionChanged += selectionChangedEvent;
+        }
+
+        protected void InitializePropertyContainer() {
+            if(mousePropertyContainer == null) {
+                mousePropertyContainer = GetComponent<InputPropertyContainer>();
+            }
         }
 
     }

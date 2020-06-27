@@ -7,15 +7,9 @@ namespace com.halbach.imageselection.input {
 
     public class MouseInput : PointerInput
     {
-        [SerializeField]
-        private InputPropertyContainer mousePropertyContainer;
         private IMouseInputState mouseInputState;
 
         protected override void InitializeInternal(RectTransform transformTarget, BoxCollider2D selectionRectCollider, Camera renderCamera) {
-
-            if(mousePropertyContainer == null) {
-                mousePropertyContainer = GetComponent<InputPropertyContainer>();
-            }
             
             MouseInputState newMouseInputState = new MouseInputState(mousePropertyContainer, transformTarget);
             mouseInputState = newMouseInputState;
