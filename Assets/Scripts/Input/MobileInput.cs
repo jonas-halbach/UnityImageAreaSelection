@@ -16,7 +16,7 @@ namespace com.halbach.imageselection.input {
 
             currentState = new MobileInputState(transformTarget);
 
-            stateEvaluator = new MobileInputStateEvaluator(renderCamera, transformTarget, selectionRectCollider);
+            stateEvaluator = new MobileInputStateEvaluator(renderCamera, transformTarget, selectionRectCollider, propertyContainer);
 
             pointerState = stateEvaluator.GetNewState(currentState);
         }

@@ -6,6 +6,8 @@ namespace com.halbach.imageselection.input {
     {
         MobileInputState currentState;
 
+        InputPropertyContainer PropertyContainer{get; set;}
+
         int currentTouchCount = 0;
 
         Camera camera;
@@ -22,13 +24,14 @@ namespace com.halbach.imageselection.input {
             get; private set;
         }
 
-        public MobileInputStateEvaluator(Camera camera, RectTransform selectionRect, BoxCollider2D selectionRectCollider) {
+        public MobileInputStateEvaluator(Camera camera, RectTransform selectionRect, BoxCollider2D selectionRectCollider, InputPropertyContainer propertyContainer) {
             this.camera = camera;
             this.selectionRectCollider = selectionRectCollider;
             this.selectionRect = selectionRect;
             List<Touch> currentTouches = GetTouches();
             UpdateTouchPositions(currentTouches);
             currentTouchCount = TouchPositions.Count;
+            PropertyContainer = propertyContainer;
         }
 
         public MobileInputState GetNewState(MobileInputState currentState) {
@@ -115,7 +118,7 @@ namespace com.halbach.imageselection.input {
             if(touchCount == 1) {
                 mobileInputState = new MobileSelectionRectMoveState(selectionRect, selectionRectCollider);
             } else if(touchCount == 2) {
-                mobileInputState = new MobileSelectionRectScaleState(selectionRect);
+                mobileInputState = new MobileSelectionRectScaleState(selectionRect, PropertyContainer);
             } else {
                 mobileInputState = new MobileInputState(selectionRect);
             }

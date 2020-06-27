@@ -8,7 +8,7 @@ namespace com.halbach.imageselection.input {
         public event SelectionChanged OnSelectionChanged;
 
         [SerializeField]
-        protected InputPropertyContainer mousePropertyContainer;
+        protected InputPropertyContainer propertyContainer;
         private bool isInitialized = false;
 
         protected InputState pointerState;
@@ -43,8 +43,8 @@ namespace com.halbach.imageselection.input {
         }
 
         protected void InitializePropertyContainer() {
-            if(mousePropertyContainer == null) {
-                mousePropertyContainer = GetComponent<InputPropertyContainer>();
+            if(propertyContainer == null) {
+                propertyContainer = GetComponent<InputPropertyContainer>();
             }
         }
 

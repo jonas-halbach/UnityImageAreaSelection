@@ -7,8 +7,11 @@ namespace com.halbach.imageselection.input {
     {
         private Vector2 touchPointConnection;
 
-        public MobileSelectionRectScaleState(RectTransform transformTarget) : base(transformTarget) {
+        InputPropertyContainer propertyContainer;
+
+        public MobileSelectionRectScaleState(RectTransform transformTarget, InputPropertyContainer propertyContainer) : base(transformTarget) {
             touchPointConnection = Vector2.zero;
+            this.propertyContainer = propertyContainer;
         }
 
         protected override void UpdateInternal(List<Vector2> touchPositions, Vector2 newTouchPointConnection)

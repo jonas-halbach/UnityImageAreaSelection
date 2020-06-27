@@ -11,7 +11,7 @@ namespace com.halbach.imageselection.input {
 
         protected override void InitializeInternal(RectTransform transformTarget, BoxCollider2D selectionRectCollider, Camera renderCamera) {
             
-            MouseInputState newMouseInputState = new MouseInputState(mousePropertyContainer, transformTarget);
+            MouseInputState newMouseInputState = new MouseInputState(propertyContainer, transformTarget);
             mouseInputState = newMouseInputState;
             pointerState = newMouseInputState;
             pointerState.AddOnSelectionChangedEvent(GetOnSelectionChangedEvent());
