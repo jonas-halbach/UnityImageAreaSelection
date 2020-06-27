@@ -13,7 +13,7 @@ namespace com.halbach.imageselection.input {
         {
             base.MouseUp(mousePos);
 
-            return new MouseInputState(mousePropertyContainer, transformTarget);
+            return new MouseInputState(propertyContainer, transformTarget);
         }
 
     }

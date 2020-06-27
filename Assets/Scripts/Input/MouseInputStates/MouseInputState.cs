@@ -4,28 +4,27 @@ namespace com.halbach.imageselection.input {
     public class MouseInputState : InputState, IMouseInputState
     {
         protected RectTransform transformTarget;
-        protected InputPropertyContainer mousePropertyContainer;
+        protected InputPropertyContainer propertyContainer;
         protected Vector2 currentMousePosition;
 
         private Texture2D mouseCursorTexture;
         protected TargetMousePosition mouseCorner;
 
-        public MouseInputState(TargetMousePosition mouseCorner, InputPropertyContainer mousePropertyContainer, RectTransform transformTarget) {
+        public MouseInputState(TargetMousePosition mouseCorner, InputPropertyContainer propertyContainer, RectTransform transformTarget) {
             this.mouseCorner = mouseCorner;
             this.transformTarget = transformTarget;
 
-            this.mousePropertyContainer = mousePropertyContainer;
+            this.propertyContainer = propertyContainer;
 
             InitializeState();
         }
 
-        public MouseInputState( InputPropertyContainer mousePropertyContainer,
-                                RectTransform transformTarget)
+        public MouseInputState( InputPropertyContainer propertyContainer, RectTransform transformTarget)
         {
             this.mouseCorner = TargetMousePosition.NO_CORNER;
             this.transformTarget = transformTarget;
 
-            this.mousePropertyContainer = mousePropertyContainer;
+            this.propertyContainer = propertyContainer;
 
             currentMousePosition = Vector2.zero;
 
@@ -34,7 +33,7 @@ namespace com.halbach.imageselection.input {
 
         protected virtual void InitializeState()
         {
-            mouseCursorTexture = mousePropertyContainer.GetTexture(mouseCorner);
+            mouseCursorTexture = propertyContainer.GetTexture(mouseCorner);
             ChangeCursorTexture();
             PrintTriggerMessage(mouseCorner.ToString());
         }
@@ -173,7 +172,7 @@ namespace com.halbach.imageselection.input {
             if(DoesStateChange(corner)) {
                 Texture2D cursorTexture = GetCursorTexture(corner);
                 //TODO: Unregister old listener
-                MouseOverCornerState currentState = new MouseOverCornerState(corner, mousePropertyContainer, transformTarget);
+                MouseOverCornerState currentState = new MouseOverCornerState(corner, propertyContainer, transformTarget);
                 currentState.AddOnSelectionChangedEvent(GetOnSelectionChangedEvent());
                 state = currentState;
             }
@@ -188,7 +187,7 @@ namespace com.halbach.imageselection.input {
         private IMouseInputState HandleNotTriggerd() {
             IMouseInputState state = this;
             if(DoesStateChange(TargetMousePosition.NO_CORNER)) {
-                MouseInputState currentState = new MouseInputState(TargetMousePosition.NO_CORNER, mousePropertyContainer, transformTarget);
+                MouseInputState currentState = new MouseInputState(TargetMousePosition.NO_CORNER, propertyContainer, transformTarget);
                 currentState.AddOnSelectionChangedEvent(GetOnSelectionChangedEvent());
                 state = currentState;
             }
@@ -199,7 +198,7 @@ namespace com.halbach.imageselection.input {
         private IMouseInputState HandleMouseOver() {
             IMouseInputState state = this;
             if(DoesStateChange(TargetMousePosition.MOUSE_OVER)) {
-                MouseOverRectState currentState = new MouseOverRectState(TargetMousePosition.MOUSE_OVER, mousePropertyContainer, transformTarget);
+                MouseOverRectState currentState = new MouseOverRectState(TargetMousePosition.MOUSE_OVER, propertyContainer, transformTarget);
                 currentState.AddOnSelectionChangedEvent(GetOnSelectionChangedEvent());
                 state = currentState;
             }
@@ -225,13 +224,13 @@ namespace com.halbach.imageselection.input {
             Vector3 vector = point1 - point2;
             float distance = Mathf.Abs(vector.magnitude);
 
-            bool isInTriggerDistance = distance <= mousePropertyContainer.TriggerDistance;
+            bool isInTriggerDistance = distance <= propertyContainer.TriggerDistance;
 
             return isInTriggerDistance;
         }
 
         private Texture2D GetCursorTexture(TargetMousePosition corner) {
-            return mousePropertyContainer.GetTexture(corner);
+            return propertyContainer.GetTexture(corner);
         }
     }
 
