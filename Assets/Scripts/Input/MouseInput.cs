@@ -5,30 +5,25 @@ namespace com.halbach.imageselection.input {
 
     public delegate void SelectionChanged(object sender);
 
-    public class MouseInput : MonoBehaviour
+    public class MouseInput : PointerInput
     {
-        public event SelectionChanged OnSelectionChanged;
-
         [SerializeField]
-        private RectTransform transformTarget;
-
-        [SerializeField]
-        private float triggerDistance;
-
-        [SerializeField]
-        private Texture2D defaultCursorTexture;
-
-        [SerializeField]
-        private MousePropertyContainer mouseCursorTextureContainer;
+        private MousePropertyContainer mousePropertyContainer;
         private IMouseInputState mouseInputState;
 
-        void Start()
-        {
-            mouseInputState = new MouseInputState(mouseCursorTextureContainer, transformTarget);
-            mouseInputState.OnSelectionChanged += OnSelectionChanged;
+        protected override void InitializeInternal(RectTransform transformTarget, BoxCollider2D selectionRectCollider, Camera renderCamera) {
+
+            if(mousePropertyContainer == null) {
+                mousePropertyContainer = GetComponent<MousePropertyContainer>();
+            }
+            
+            MouseInputState newMouseInputState = new MouseInputState(mousePropertyContainer, transformTarget);
+            mouseInputState = newMouseInputState;
+            pointerState = newMouseInputState;
+            pointerState.AddOnSelectionChangedEvent(GetOnSelectionChangedEvent());
         }
 
-        void Update()
+        public override void UpdateInternal()
         {
             UpdateMousePos(); 
         }

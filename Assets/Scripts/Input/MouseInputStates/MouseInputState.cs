@@ -1,9 +1,8 @@
 using UnityEngine;
 
 namespace com.halbach.imageselection.input {
-    public class MouseInputState : IMouseInputState
+    public class MouseInputState : InputState, IMouseInputState
     {
-        public event SelectionChanged OnSelectionChanged;
         protected RectTransform transformTarget;
         protected MousePropertyContainer mousePropertyContainer;
         protected Vector2 currentMousePosition;
@@ -173,8 +172,10 @@ namespace com.halbach.imageselection.input {
             IMouseInputState state = this;
             if(DoesStateChange(corner)) {
                 Texture2D cursorTexture = GetCursorTexture(corner);
-                state = new MouseOverCornerState(corner, mousePropertyContainer, transformTarget);
-                state.OnSelectionChanged += OnSelectionChanged;
+                //TODO: Unregister old listener
+                MouseOverCornerState currentState = new MouseOverCornerState(corner, mousePropertyContainer, transformTarget);
+                currentState.AddOnSelectionChangedEvent(GetOnSelectionChangedEvent());
+                state = currentState;
             }
             return state;
         }
@@ -187,8 +188,9 @@ namespace com.halbach.imageselection.input {
         private IMouseInputState HandleNotTriggerd() {
             IMouseInputState state = this;
             if(DoesStateChange(TargetMousePosition.NO_CORNER)) {
-                state = new MouseInputState(TargetMousePosition.NO_CORNER, mousePropertyContainer, transformTarget);
-                state.OnSelectionChanged += OnSelectionChanged;
+                MouseInputState currentState = new MouseInputState(TargetMousePosition.NO_CORNER, mousePropertyContainer, transformTarget);
+                currentState.AddOnSelectionChangedEvent(GetOnSelectionChangedEvent());
+                state = currentState;
             }
 
             return state;
@@ -197,8 +199,9 @@ namespace com.halbach.imageselection.input {
         private IMouseInputState HandleMouseOver() {
             IMouseInputState state = this;
             if(DoesStateChange(TargetMousePosition.MOUSE_OVER)) {
-                state = new MouseOverRectState(TargetMousePosition.MOUSE_OVER, mousePropertyContainer, transformTarget);
-                state.OnSelectionChanged += OnSelectionChanged;
+                MouseOverRectState currentState = new MouseOverRectState(TargetMousePosition.MOUSE_OVER, mousePropertyContainer, transformTarget);
+                currentState.AddOnSelectionChangedEvent(GetOnSelectionChangedEvent());
+                state = currentState;
             }
             return state;
         }
@@ -229,13 +232,6 @@ namespace com.halbach.imageselection.input {
 
         private Texture2D GetCursorTexture(TargetMousePosition corner) {
             return mousePropertyContainer.GetTexture(corner);
-        }
-
-        protected void UpdateSelection() {
-            if(OnSelectionChanged != null)
-            {
-                OnSelectionChanged(this);
-            }
         }
     }
 
