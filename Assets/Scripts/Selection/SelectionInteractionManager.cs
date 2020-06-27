@@ -22,13 +22,21 @@ namespace com.halbach.imageselection.selection
 
         private Rect currentSelection;
 
-        private MouseInput input;
+        private PointerInput input;
 
+        public RectTransform RectTransform {
+            get {return rectTransform;}
+            set {this.rectTransform = value;} 
+        }
+
+        public Camera PreviewCamera {
+            get {return previewRenderCamera;}
+            set {this.previewRenderCamera = value;}
+        }
         private void Start()
         {
             InitializeCollider();
             InitializeSelection();
-            InitializeEvents();
         }
 
         private void OnSelectionRectChanged()
@@ -53,12 +61,12 @@ namespace com.halbach.imageselection.selection
             UpdateSelection();
         }
 
-        private void InitializeEvents()
+        public void InitializeEvents()
         {
-            input = GetComponent<MouseInput>();
+            input = GetComponent<PointerInput>();
             if(input != null)
             {
-                input.OnSelectionChanged += OnUpdateSelection;
+                input.SetEvents(OnUpdateSelection);
             }
         }
 
