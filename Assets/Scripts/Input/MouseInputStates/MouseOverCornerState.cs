@@ -38,22 +38,12 @@ namespace com.halbach.imageselection.input {
 
         private float CalculateUpdatedVerticalSize(Vector3 delta) {
             int verticalMultiplicator = GetVerticalMultiplicator();
-            float newVerticalSize = transformTarget.rect.size.y + (verticalMultiplicator * delta.y);
-
-            newVerticalSize = Mathf.Max(newVerticalSize,mousePropertyContainer.MinimumHeight);
-            newVerticalSize = Mathf.Min(newVerticalSize,mousePropertyContainer.MaximumHeight);
-
-            return newVerticalSize;
+            return propertyContainer.CalculateUpdatedVerticalSize(delta, transformTarget.rect, verticalMultiplicator);
         }
 
         private float CalculateUpdatedHorizontalSize(Vector3 delta) {
             int horizontalMultiplicator = GetHorizontalMultiplicator();
-            float newHorizontalSize = transformTarget.rect.size.x - (horizontalMultiplicator * delta.x);
-
-            newHorizontalSize = Mathf.Max(newHorizontalSize, mousePropertyContainer.MinimumWidth);
-            newHorizontalSize = Mathf.Min(newHorizontalSize, mousePropertyContainer.MaximumWidth);
-
-            return newHorizontalSize;
+            return propertyContainer.CalculateUpdatedHorizontalSize(delta, transformTarget.rect, horizontalMultiplicator);
         }
         private Vector3 MaxMovementDelta(Vector3[] rectCornersBeforeResizing, Vector3[] rectCornersAfterResizing, int index) {
             

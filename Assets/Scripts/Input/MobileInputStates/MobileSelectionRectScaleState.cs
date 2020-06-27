@@ -38,8 +38,10 @@ namespace com.halbach.imageselection.input {
         }
 
         private void ScaleSelectionRect(Vector3 delta) {
-            transformTarget.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, transformTarget.rect.size.x - delta.x);
-            transformTarget.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, transformTarget.rect.size.y - delta.y);
+            float horizontalSize = propertyContainer.CalculateUpdatedHorizontalSize(delta, transformTarget.rect);
+            float verticalSize = propertyContainer.CalculateUpdatedVerticalSize(delta, transformTarget.rect);
+            transformTarget.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, horizontalSize);
+            transformTarget.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, verticalSize);
         }
     }
 }
