@@ -4,13 +4,13 @@ namespace com.halbach.imageselection.input {
     public class MouseInputState : InputState, IMouseInputState
     {
         protected RectTransform transformTarget;
-        protected MousePropertyContainer mousePropertyContainer;
+        protected InputPropertyContainer mousePropertyContainer;
         protected Vector2 currentMousePosition;
 
         private Texture2D mouseCursorTexture;
         protected TargetMousePosition mouseCorner;
 
-        public MouseInputState(TargetMousePosition mouseCorner, MousePropertyContainer mousePropertyContainer, RectTransform transformTarget) {
+        public MouseInputState(TargetMousePosition mouseCorner, InputPropertyContainer mousePropertyContainer, RectTransform transformTarget) {
             this.mouseCorner = mouseCorner;
             this.transformTarget = transformTarget;
 
@@ -19,7 +19,7 @@ namespace com.halbach.imageselection.input {
             InitializeState();
         }
 
-        public MouseInputState( MousePropertyContainer mousePropertyContainer,
+        public MouseInputState( InputPropertyContainer mousePropertyContainer,
                                 RectTransform transformTarget)
         {
             this.mouseCorner = TargetMousePosition.NO_CORNER;

@@ -9,7 +9,7 @@ namespace com.halbach.imageselection.input {
 
         private Vector3 lastMousePosition;
 
-        public MouseDragState(TargetMousePosition mouseCorner, MousePropertyContainer mousePropertyContainer, RectTransform transformTarget) 
+        public MouseDragState(TargetMousePosition mouseCorner, InputPropertyContainer mousePropertyContainer, RectTransform transformTarget) 
                                         : base(mouseCorner, mousePropertyContainer, transformTarget)
         {
             mouseDown = false;

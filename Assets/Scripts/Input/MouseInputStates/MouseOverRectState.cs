@@ -9,7 +9,7 @@ namespace com.halbach.imageselection.input {
 
         private RectMover mover;
 
-        public MouseOverRectState(TargetMousePosition mouseCorner, MousePropertyContainer mousePropertyContainer, RectTransform transformTarget) 
+        public MouseOverRectState(TargetMousePosition mouseCorner, InputPropertyContainer mousePropertyContainer, RectTransform transformTarget) 
                                         : base(mouseCorner, mousePropertyContainer, transformTarget)
         {
             mover = new RectMover(transformTarget);

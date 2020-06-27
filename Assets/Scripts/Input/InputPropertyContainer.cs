@@ -4,7 +4,7 @@ using System.Collections.Generic;
 namespace com.halbach.imageselection.input {
 
 
-    public class MousePropertyContainer : MonoBehaviour {
+    public class InputPropertyContainer : MonoBehaviour {
 
         [SerializeField]
         private List<MouseCursorTextureListElement> initializableTextures;

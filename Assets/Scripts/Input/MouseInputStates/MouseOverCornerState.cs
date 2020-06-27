@@ -7,7 +7,7 @@ namespace com.halbach.imageselection.input {
 
         Vector3 oldSizeDelta;
 
-        public MouseOverCornerState(TargetMousePosition mouseCorner, MousePropertyContainer mousePropertyContainer, RectTransform transformTarget) 
+        public MouseOverCornerState(TargetMousePosition mouseCorner, InputPropertyContainer mousePropertyContainer, RectTransform transformTarget) 
                                         : base(mouseCorner, mousePropertyContainer, transformTarget)
         {
             oldRectPosition = transformTarget.position;

@@ -3,7 +3,7 @@ using UnityEngine;
 namespace com.halbach.imageselection.input {
     public class ScaleState : MouseInputState {
 
-        public ScaleState(float triggerDistance, MousePropertyContainer mousePropertyContainer, RectTransform transformTarget) : 
+        public ScaleState(float triggerDistance, InputPropertyContainer mousePropertyContainer, RectTransform transformTarget) : 
                                     base(mousePropertyContainer, transformTarget)
         {
             currentMousePosition = Vector2.zero;
