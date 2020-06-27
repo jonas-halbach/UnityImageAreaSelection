@@ -231,7 +231,6 @@ GameObject:
   - component: {fileID: 212331631}
   - component: {fileID: 212331630}
   - component: {fileID: 212331629}
-  - component: {fileID: 212331628}
   m_Layer: 0
   m_Name: Plane
   m_TagString: Untagged
@@ -239,20 +238,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!64 &212331628
-MeshCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 212331627}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Convex: 0
-  m_CookingOptions: 14
-  m_Mesh: {fileID: 10209, guid: 0000000000000000e000000000000000, type: 0}
 --- !u!23 &212331629
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -323,11 +308,11 @@ GameObject:
   m_Component:
   - component: {fileID: 318275940}
   - component: {fileID: 318275941}
-  - component: {fileID: 318275942}
   - component: {fileID: 318275943}
-  - component: {fileID: 318275944}
   - component: {fileID: 318275945}
   - component: {fileID: 318275946}
+  - component: {fileID: 318275944}
+  - component: {fileID: 318275942}
   m_Layer: 5
   m_Name: Selection
   m_TagString: Untagged
@@ -428,7 +413,7 @@ BoxCollider2D:
   m_Enabled: 1
   m_Density: 1
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
@@ -453,14 +438,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 318275939}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bda9189f3f1dbb20a949c240dff2584d, type: 3}
+  m_Script: {fileID: 11500000, guid: cbe72b5a0b03ab6ae92d4b3e4d356b1c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   transformTarget: {fileID: 318275940}
-  triggerDistance: 25
-  defaultCursorTexture: {fileID: 2800000, guid: 9ed1cb3a013b69af4bede1dabde9bdf8,
-    type: 3}
-  mouseCursorTextureContainer: {fileID: 318275945}
+  selectionRectCollider: {fileID: 318275943}
+  renderCamera: {fileID: 1207796782}
+  interactionManager: {fileID: 0}
 --- !u!114 &318275945
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -487,7 +471,7 @@ MonoBehaviour:
   - key: 4
     value: {fileID: 2800000, guid: 5e9c0e3ac262de0fdb464b323ce1790f, type: 3}
   defaultCursorSize: 25
-  triggerDistance: 25
+  triggerDistance: 0.5
   minimumWidth: 0.5
   minimumHeight: 0.5
   maximumWidth: 3
@@ -504,11 +488,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ee145d3d80ceed1e1b02aa079edf774e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rectTransform: {fileID: 0}
-  spriteRenderer: {fileID: 0}
+  rectTransform: {fileID: 318275940}
+  spriteRenderer: {fileID: 318275941}
   aditionalColliderSize: 0.1
   myCollider: {fileID: 0}
-  selectionInteractionManager: {fileID: 0}
+  selectionInteractionManager: {fileID: 318275942}
 --- !u!1 &382214293
 GameObject:
   m_ObjectHideFlags: 0
@@ -586,6 +570,7 @@ GameObject:
   - component: {fileID: 519420032}
   - component: {fileID: 519420031}
   - component: {fileID: 519420029}
+  - component: {fileID: 519420030}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -601,6 +586,19 @@ AudioListener:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 519420028}
   m_Enabled: 1
+--- !u!114 &519420030
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 519420028}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b5f35871bc844384493786ef4d5f6016, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  showDebugLog: 0
 --- !u!20 &519420031
 Camera:
   m_ObjectHideFlags: 0
@@ -825,7 +823,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1703787838
 RectTransform:
   m_ObjectHideFlags: 0
@@ -857,7 +855,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 2100000, guid: 918c0e9957882125f8211331651cbc68, type: 2}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
   m_OnCullStateChanged:
