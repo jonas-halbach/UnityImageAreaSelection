@@ -80,9 +80,7 @@ namespace com.halbach.imageselection.selection
             if(updatePreviewOnSelectionChange) {
                 if (imageSelection != null ) {
 
-                    Color[] selectedImageExtraction = GrabSelectionImage(selectionRect);
-
-                    UpdatePreviewImage(selectedImageExtraction);
+                    UpdatePreviewImage(selectionRect);
                 }
             }
         }
@@ -156,10 +154,11 @@ namespace com.halbach.imageselection.selection
             return tex;
         }
 
-        private void UpdatePreviewImage(Color[] image)
+        private void UpdatePreviewImage(Rect selectionRect)
         {
             if ( previewImage != null )
             {
+                Color[] image = GrabSelectionImage(selectionRect);
                 previewImage.sprite.texture.SetPixels(image);
                 previewImage.sprite.texture.Apply();
             } else {
